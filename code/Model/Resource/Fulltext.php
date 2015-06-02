@@ -257,4 +257,22 @@ class Algolia_Algoliasearch_Model_Resource_Fulltext extends Mage_CatalogSearch_M
         }
         return preg_replace("#\s+#siu", ' ', trim(strip_tags($value)));
     }
+
+    /**
+     * Reset catalogsearch_result.is_processed to 0
+     * Avoid repeating this action too many times on large updates.
+     *
+     * @return $this
+     */
+    public function resetSearchResults()
+    {
+        static $counter = -1;
+        $counter++;
+        if ($counter < 10 || $counter % 100 == 0) {
+            parent::resetSearchResults();
+        }
+
+        return $this;
+    }
+
 }
