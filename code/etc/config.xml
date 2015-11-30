@@ -24,6 +24,15 @@
                 </observers>
             </controller_action_layout_load_before>
         </events>
+        <routers>
+            <catalogsearch>
+                <args>
+                    <modules>
+                        <Algolia_Algoliasearch before="Mage_CatalogSearch">Algolia_Algoliasearch</Algolia_Algoliasearch>
+                    </modules>
+                </args>
+            </catalogsearch>
+        </routers>
     </frontend>
     <global>
         <helpers>
