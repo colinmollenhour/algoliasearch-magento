@@ -447,7 +447,7 @@ class Algolia_Algoliasearch_Model_Indexer_Algolia extends Mage_Index_Model_Index
          */
         else if ( ! empty($data['catalogsearch_delete_product_id'])) {
             $productId = $data['catalogsearch_delete_product_id'];
-            $storeId = $data['catalogsearch_scope'] ?: NULL;
+            $storeId = $data['catalogsearch_scope'] ?? NULL;
             if ( ! $this->_isProductComposite($productId)) {
                 $parentIds = $this->_getResource()->getRelationsByChild($productId);
                 if ( ! empty($parentIds)) {
@@ -503,7 +503,7 @@ class Algolia_Algoliasearch_Model_Indexer_Algolia extends Mage_Index_Model_Index
                 }
             }
             else if (isset($data['catalogsearch_status'])) {
-                $storeId = $data['catalogsearch_scope'] ?: NULL;
+                $storeId = $data['catalogsearch_scope'] ?? NULL;
                 $this->_getIndexer()
                     ->rebuildProductIndex($storeId, $productIds);
             }
@@ -521,7 +521,7 @@ class Algolia_Algoliasearch_Model_Indexer_Algolia extends Mage_Index_Model_Index
             $updateProductIds = $data['catalogsearch_update_product_id'];
             $updateProductIds = is_array($updateProductIds) ? $updateProductIds : array($updateProductIds);
             $productIds = $updateProductIds;
-            $storeId = $data['catalogsearch_scope'] ?: NULL;
+            $storeId = $data['catalogsearch_scope'] ?? NULL;
             foreach ($updateProductIds as $updateProductId) {
                 if ( ! $this->_isProductComposite($updateProductId)) {
                     $parentIds = $this->_getResource()->getRelationsByChild($updateProductId);
