@@ -77,7 +77,15 @@ class Algolia_Algoliasearch_Model_Queue
         // Reserve all new jobs since last run
         $pid = getmypid();
         $limit = ($limit ? "LIMIT $limit":'');
-        $batchSize = $this->_db->query("UPDATE {$this->_db->quoteIdentifier($this->_table,true)} SET pid = {$pid} WHERE pid IS NULL ORDER BY job_id $limit")->rowCount();
+        $this->_db->query('SET TRANSACTION ISOLATION LEVEL READ COMMITTED');
+        $this->_db->beginTransaction();
+        try {
+            $batchSize = $this->_db->query("UPDATE {$this->_db->quoteIdentifier($this->_table,true)} SET pid = {$pid} WHERE pid IS NULL ORDER BY job_id $limit")->rowCount();
+            $this->_db->commit();
+        } catch (Exception $e) {
+            $this->_db->rollBack();
+            throw $e;
+        }
 
         // Run all reserved jobs
         $result = $this->_db->query($this->_db->select()->from($this->_table, '*')->where('pid = ?',$pid)->order(array('job_id')));
