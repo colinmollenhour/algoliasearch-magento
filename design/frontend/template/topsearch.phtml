@@ -1,9 +1,10 @@
+<?php /** @var $this Mage_Core_Block_Template */?>
+<?php if ( ! Mage::helper('core')->isModuleEnabled('Algolia_Algoliasearch')): return; endif; ?>
+<?php $algoliaSearchHelper = $this->helper('algoliasearch'); /** @var $algoliaSearchHelper Algolia_Algoliasearch_Helper_Data */ ?>
+<?php if ( ! $algoliaSearchHelper->isEnabled() || ! $algoliaSearchHelper->isPopupEnabled()): return; endif; ?>
 <?php
     $catalogSearchHelper = $this->helper('catalogsearch'); /** @var $catalogSearchHelper Mage_CatalogSearch_Helper_Data */
-    $algoliaSearchHelper = $this->helper('algoliasearch'); /** @var $algoliaSearchHelper Algolia_Algoliasearch_Helper_Data */
 ?>
-
-
 <form id="search_mini_form" action="<?php echo $catalogSearchHelper->getResultUrl() ?>" method="get">
     <div class="form-search">
         <label for="search"><?php echo $this->__('Search:') ?></label>
