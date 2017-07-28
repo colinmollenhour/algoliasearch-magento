@@ -255,21 +255,30 @@ class Algolia_Algoliasearch_Model_Indexer_Algolia extends Mage_Index_Model_Index
                 /** @var $product Mage_Catalog_Model_Product */
                 $product = $event->getDataObject();
                 $event->addNewData('catalogsearch_scope', $product->getStoreId());
+
                 // Delete disabled or not visible for search products
                 $delete = FALSE;
                 if ($product->dataHasChangedFor('status') && $product->getStatus() == Mage_Catalog_Model_Product_Status::STATUS_DISABLED) {
                     $delete = TRUE;
-                } elseif ($product->dataHasChangedFor('visibility') && ! in_array($product->getData('visibility'), Mage::getSingleton('catalog/product_visibility')->getVisibleInSearchIds())) {
+                }
+                elseif ($product->dataHasChangedFor('visibility') && ! in_array($product->getData('visibility'), Mage::getSingleton('catalog/product_visibility')->getVisibleInSearchIds())) {
                     $delete = TRUE;
                 }
+                elseif(!in_array($product->getStoreId(), $product->getStoreIds())) {
+                    $delete = TRUE;
+                }
+
                 if ($delete) {
                     $event->addNewData('catalogsearch_delete_product_id', $product->getId());
+
                     if (Mage::helper('algoliasearch')->isIndexProductCount()) {
                         $event->addNewData('catalogsearch_update_category_id', $product->getCategoryIds());
                     }
-                } else {
+                }
+                else {
                     $event->addNewData('catalogsearch_update_product_id', $product->getId());
                 }
+
                 break;
             case Mage_Index_Model_Event::TYPE_DELETE:
                 /** @var $product Mage_Catalog_Model_Product */
@@ -456,6 +465,7 @@ class Algolia_Algoliasearch_Model_Indexer_Algolia extends Mage_Index_Model_Index
                 }
             }
             $this->_getIndexer()
+                ->cleanProductIndex($storeId, $productId)
                 ->rebuildProductIndex($storeId, $productId);
             /*
              * Change indexer status as need to reindex related categories to update product count.
