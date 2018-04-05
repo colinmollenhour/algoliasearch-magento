@@ -125,6 +125,8 @@ class Algolia_Algoliasearch_Helper_Data extends Mage_Core_Helper_Abstract
         foreach ($this->getCategoryAdditionalAttributes($storeId) as $attributeCode) {
             array_push($attributesToIndex, $attributeCode);
         }
+        // Add attribute for CMS pages content
+        array_push($attributesToIndex, 'content');
 
         $customRankings = $this->getCustomRankings($storeId);
         $customRankingsArr = array();
