@@ -248,8 +248,6 @@
                             <source_model>algoliasearch/system_config_source_engine</source_model>
                             <sort_order>20</sort_order>
                             <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
                         </engine>
                         <algolia_is_enabled translate="label">
                             <label>Enabled</label>
@@ -269,10 +267,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <depends>
-                                <algolia_is_enabled>1</algolia_is_enabled>
-                                <engine>algoliasearch/engine</engine>
-                            </depends>
                         </algolia_application_id>
                         <algolia_api_key translate="label">
                             <label>API_KEY</label>
@@ -283,10 +277,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <depends>
-                                <algolia_is_enabled>1</algolia_is_enabled>
-                                <engine>algoliasearch/engine</engine>
-                            </depends>
                         </algolia_api_key>
                         <algolia_search_only_api_key translate="label">
                             <label>Search-only API_KEY (public)</label>
@@ -297,10 +287,6 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <depends>
-                                <algolia_is_enabled>1</algolia_is_enabled>
-                                <engine>algoliasearch/engine</engine>
-                            </depends>
                         </algolia_search_only_api_key>
                         <search_type>
                             <depends><engine>catalogsearch/fulltext_engine</engine></depends>

@@ -31,6 +31,7 @@ class Algolia_Algoliasearch_Helper_Data extends Mage_Core_Helper_Abstract
     private static $_activeCategories;
     private static $_rootCategoryId = -1;
     private static $_categoryAttributes;
+    private static $_clients = [];
 
     /**
      * Predefined Magento product attributes that are used to prepare data for indexing
@@ -169,9 +170,17 @@ class Algolia_Algoliasearch_Helper_Data extends Mage_Core_Helper_Abstract
         return $indexSettings;
     }
 
+    /**
+     * @return \AlgoliaSearch\Client
+     * @throws Exception
+     */
     private function getClient()
     {
-        return new \AlgoliaSearch\Client($this->getApplicationID(), $this->getAPIKey());
+        $storeId = Mage::app()->getStore()->getId();
+        if ( ! isset(self::$_clients[$storeId])) {
+            self::$_clients[$storeId] = new \AlgoliaSearch\Client($this->getApplicationID(), $this->getAPIKey());
+        }
+        return self::$_clients[$storeId];
     }
 
     /**
@@ -819,7 +828,10 @@ class Algolia_Algoliasearch_Helper_Data extends Mage_Core_Helper_Abstract
 
     public function isEnabled($storeId = NULL)
     {
-        return (bool) Mage::getStoreConfigFlag(self::XML_PATH_IS_ALGOLIA_SEARCH_ENABLED, $storeId);
+        return (
+            'algoliasearch/engine' == Mage::getStoreConfig('catalog/search/engine', 0)
+                && Mage::getStoreConfigFlag(self::XML_PATH_IS_ALGOLIA_SEARCH_ENABLED, $storeId)
+        );
     }
 
     public function isPopupEnabled($storeId = NULL)
